@@ -17,36 +17,37 @@ namespace perviy_proect
 			string word = GenerateRandomWord();
 			
 			int cnt = 0;
-			int letter_counter = 0;
-			int totalmoney = 0;
+			int letterCounter = 0;
+			int totalMoney = 0;
 			bool guessed = false;
 			int sumBall = 0;
 
-			string hiddenword = HideWord(word);
+			string hiddenWord = HideWord(word);
+			Console.WriteLine(hiddenWord);
 
-			string ball = GenerateRandomSector();
+			string sector = GenerateRandomSector();
 
-			while (hiddenword != word)
+			while (hiddenWord != word)
 			{
 				string tempHiddenWord = "";
 				//
 				//ЕСЛИ СУЕТА НА БАРАБАНЕ----------------------------------
-				if (ball == "+")
+				if (sector == "+")
 				{
 					while (guessed == false)
 					{
 						Console.WriteLine("Выберите букву!");
-						string letter_plus = Console.ReadLine();
+						string letterSpawn = Console.ReadLine();
 						int numberr;
-						if (int.TryParse(letter_plus, out numberr))
+						if (int.TryParse(letterSpawn, out numberr))
 						{
-							int letter_plus1 = int.Parse(letter_plus);
-							for (int g = 0; g < hiddenword.Length; g++)
+							int freeLetter = int.Parse(letterSpawn);
+							for (int g = 0; g < hiddenWord.Length; g++)
 							{
-								if (g == letter_plus1 - 1)
-									tempHiddenWord += word[letter_plus1 - 1];
+								if (g == freeLetter - 1)
+									tempHiddenWord += word[freeLetter - 1];
 								else
-									tempHiddenWord += hiddenword[g];
+									tempHiddenWord += hiddenWord[g];
 							}
 							guessed = true;
 						}
@@ -54,15 +55,15 @@ namespace perviy_proect
 							Console.WriteLine("Такая буква уже открыта или её нет в слове");
 					}
 				}
-				if (ball == "Б")
+				if (sector == "Б")
 				{
-					Console.WriteLine("Баллы на барабане: " + ball + " Обанкротился родной");
+					Console.WriteLine("Баллы на барабане: " + sector + " Обанкротился родной");
 					sumBall = 0;
 					break;
 				}
-				else if (ball == "П")
+				else if (sector == "П")
 				{
-					Console.WriteLine("Баллы на барабане: " + ball + " Буква П на барабане!!!");
+					Console.WriteLine("Баллы на барабане: " + sector + " Буква П на барабане!!!");
 					Console.WriteLine("Вы хотите забрать приз или деньги?");
 					string otvet = Console.ReadLine();
 					if (otvet == "Приз")
@@ -77,7 +78,7 @@ namespace perviy_proect
 				}
 
 				Console.WriteLine();
-				Console.WriteLine("Баллы на барабане: " + ball + " Сумма баллов:" + sumBall);
+				Console.WriteLine("Баллы на барабане: " + sector + " Сумма баллов:" + sumBall);
 
 				char userletter = Console.ReadLine()[0];
 				cnt++;
@@ -89,8 +90,8 @@ namespace perviy_proect
 					if (word[i] == userletter)
 					{
 						tempHiddenWord = tempHiddenWord + userletter;
-						letter_counter++;
-						if (ball == "Х2")
+						letterCounter++;
+						if (sector == "Х2")
 						{
 							Console.WriteLine("Вам выпало X2 Баллов");
 							sumBall = sumBall * 2;
@@ -98,29 +99,31 @@ namespace perviy_proect
 					}
 					else
 					{
-						tempHiddenWord = tempHiddenWord + hiddenword[i];
-						letter_counter = 0;
+						tempHiddenWord = tempHiddenWord + hiddenWord[i-1];
+						letterCounter = 0;
 					}
 
-					if (tempHiddenWord != hiddenword)
+					if (tempHiddenWord != hiddenWord)
 					{
-						int intball = int.Parse(ball);
+						int intball = int.Parse(sector);
 						sumBall = intball + sumBall;
 					}
-					hiddenword = tempHiddenWord;
-					Console.WriteLine(hiddenword + " " + cnt);
+					hiddenWord = tempHiddenWord;
+					Console.WriteLine(hiddenWord + " " + cnt);
 					//
 					//
 					//ШКАТУЛКА
-					if (letter_counter > 2)
+					if (letterCounter > 2)
 					{
-						GuessBoxex(letter_counter, totalmoney);
+						totalMoney = totalMoney + GuessBoxex();
+						letterCounter = 0;
 					}
 				}
-				if (hiddenword != word)
+				if (hiddenWord != word)
 					Console.WriteLine("Ура! Вы победили!!!");
 				else
 					Console.WriteLine("К сожалению,Вы проиграли ;[");
+				//
 				Console.WriteLine();
 				Console.WriteLine("Твоя сумма баллов:" + sumBall);
 				//
@@ -177,9 +180,8 @@ namespace perviy_proect
 
 			return hiddenWord;
 		}
-		static void GuessBoxex(int letter_counter,int totalMoney)
+		static int GuessBoxex()
 		{
-			letter_counter = 0;
 			Console.WriteLine("Вы можете выбрать одну из трех шкатулок, в которой есть приз!");
 			int numBox = Convert.ToInt32(Console.ReadLine());
 			int indexBox = new Random().Next(1, 4);
@@ -187,11 +189,12 @@ namespace perviy_proect
 			if (numBox == indexBox)
 			{
 				Console.WriteLine($"Ты выбрал шкатулку под номером {numBox}! Ты выигрываешь 5000 рублей");
-				totalMoney = totalMoney + 5000;
+				return 5000;
 			}
 			else
 			{
 				Console.WriteLine($"Вы не угадали! Приз был в {indexBox} шкатулке");
+				return 0;
 			}
 		}
 	}
