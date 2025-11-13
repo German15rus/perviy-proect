@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using System.Runtime.Intrinsics.X86;
 using System.Security.Cryptography;
 using System.Xml.Schema;
+using static System.Collections.Specialized.BitVector32;
 
 namespace perviy_proect
 {
@@ -36,7 +37,7 @@ namespace perviy_proect
 				{
 					while (guessed == false)
 					{
-						Console.WriteLine("Выберите букву!");
+						Console.WriteLine("Сектор + на барабане. Выберите букву!");
 						string letterSpawn = Console.ReadLine();
 						int numberr;
 						if (int.TryParse(letterSpawn, out numberr))
@@ -76,17 +77,15 @@ namespace perviy_proect
 					}
 					break;
 				}
-
 				Console.WriteLine();
 				Console.WriteLine("Баллы на барабане: " + sector + " Сумма баллов:" + sumBall);
-
-				char userletter = Console.ReadLine()[0];
-				cnt++;
 				//
 				//
 				//УГАДЫВАЕМ СЛОВО------------------------------------------------------
 				for (int i = 0; i < word.Length; i++)
 				{
+					char userletter = Console.ReadLine()[0];
+					cnt++;
 					if (word[i] == userletter)
 					{
 						tempHiddenWord = tempHiddenWord + userletter;
@@ -99,7 +98,7 @@ namespace perviy_proect
 					}
 					else
 					{
-						tempHiddenWord = tempHiddenWord + hiddenWord[i-1];
+						tempHiddenWord = tempHiddenWord + hiddenWord[i];
 						letterCounter = 0;
 					}
 
@@ -110,8 +109,6 @@ namespace perviy_proect
 					}
 					hiddenWord = tempHiddenWord;
 					Console.WriteLine(hiddenWord + " " + cnt);
-					//
-					//
 					//ШКАТУЛКА
 					if (letterCounter > 2)
 					{
@@ -123,12 +120,9 @@ namespace perviy_proect
 					Console.WriteLine("Ура! Вы победили!!!");
 				else
 					Console.WriteLine("К сожалению,Вы проиграли ;[");
-				//
 				Console.WriteLine();
 				Console.WriteLine("Твоя сумма баллов:" + sumBall);
-				//
-				//
-				//ПРИЗЫ-----------------------------------------------------------
+				//ПРИЗЫ---------------------------------------------------------------------------------------------------------------
 				while (sumBall != 0)
 				{
 					string[] store = ["пылесос", "фото с якубовичем", "билет на эль-классико", "автомобиль", "Ферреро-Роше"];
@@ -157,7 +151,7 @@ namespace perviy_proect
 		}
 		static string GenerateRandomWord()
 		{
-			string[] wordsBank = ["дерево", "дурь"];
+			string[] wordsBank = ["дерево"];
 			int randomWordIndex = new Random().Next(0, wordsBank.Length);
 			string word = wordsBank[randomWordIndex];
 			return word;
