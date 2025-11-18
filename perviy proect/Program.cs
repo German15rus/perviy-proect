@@ -92,7 +92,6 @@ namespace perviy_proect
 						letterCounter++;
 						if (sector == "Х2")
 						{
-							Console.WriteLine("Вам выпало X2 Баллов");
 							sumBall = sumBall * 2;
 						}
 					}
@@ -150,7 +149,6 @@ namespace perviy_proect
 						choosenPrize = choisePrize;
 					}
 					else Console.WriteLine("Приз уже забрали!");
-
 				}
 				else { Console.WriteLine("У вас не хватает баллов"); }
 			}
